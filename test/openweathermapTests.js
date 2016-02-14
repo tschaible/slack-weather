@@ -51,9 +51,33 @@ describe('openweathermaps', function() {
 				done();
 			});
 		});
+
+		it('returns error on unparseable request', function(done) {
+			//mock an unsuccesful lookup
+			nock('http://api.openweathermap.org')
+				.get('/data/2.5/weather')
+				.query({
+					zip: "12345,us",
+					appid: "KEY"
+				})
+				.reply('200', {
+					name: 'city',
+					weather: [{
+						description: 'cloudy'
+					}, {
+						description: 'drizzle'
+					}]
+				});
+			weather.getWeatherByZip('12345', function(err, res) {
+				//check a correct error was returned
+				assert.strictEqual(err.message, 'Unknown response from weather service');
+				assert.strictEqual(err.status, 500)
+				done();
+			});
+		});
 	});
 
-	describe('getForecasrByZip', function() {
+	describe('getForecastByZip', function() {
 		it('gets the current weather for a zip', function(done) {
 
 			//mock a successful zip lookup (this happens first)
@@ -133,7 +157,7 @@ describe('openweathermaps', function() {
 			});
 		});
 
-		it('gets returns error on unsuccessful request', function(done) {
+		it('returns error on unsuccessful request', function(done) {
 			//keep a successful zip lookup response
 			nock('http://api.openweathermap.org')
 				.get('/data/2.5/weather')
@@ -165,6 +189,43 @@ describe('openweathermaps', function() {
 			weather.getForecastByZip('12345', function(err, res) {
 				//check a correct error was returned
 				assert.strictEqual(err.message, 'Error from weather service');
+				assert.strictEqual(err.status, 500)
+				done();
+			});
+		});
+
+		it('returns error on unparseable response', function(done) {
+			//keep a successful zip lookup response
+			nock('http://api.openweathermap.org')
+				.get('/data/2.5/weather')
+				.query({
+					zip: "12345,us",
+					appid: "KEY"
+				})
+				.reply('200', {
+					name: 'city',
+					main: {
+						temp: 273.15
+					},
+					weather: [{
+						description: 'cloudy'
+					}, {
+						description: 'drizzle'
+					}]
+				});
+			//but fail the forecast lookup
+			nock('http://api.openweathermap.org')
+				.get('/data/2.5/forecast/daily')
+				.query({
+					cnt: 5,
+					q: "city,us",
+					appid: "KEY"
+				})
+				.reply('200', {});
+
+			weather.getForecastByZip('12345', function(err, res) {
+				//check a correct error was returned
+				assert.strictEqual(err.message, 'Unknown response from weather service');
 				assert.strictEqual(err.status, 500)
 				done();
 			});

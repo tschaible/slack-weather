@@ -6,3 +6,17 @@
 slack-weather is a node.js REST server which can be used to back slack custom slash weather and forecast commands that utilize the openweathermap.org API.
 
 In other words, within slack ... type `/weather 12345` to get the weather at zip code 12345, type `/forecast 12345` to get the 5 day forecast at zip code 12345 
+
+To run:
+```
+OPENWEATHERMAP_API_KEY=[apiKey] npm start
+```
+where `[apiKey]` is a valid openweathmap.org API key.  
+
+The server will listen on all interfaces and port 3000 by default.
+
+To specify an alternate, such as 'localhost' and port 8080, run as follows
+```
+OPENWEATHERMAP_API_KEY=[apiKey] PORT=8080 SERVER_HOST=localhost npm start
+```
+where `[apiKey]` is a valid openweathmap.org API key.  
