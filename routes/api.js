@@ -1,3 +1,5 @@
+'use strict';
+
 var Weather = require('../modules/openweathermap');
 var express = require('express');
 var util = require('util');

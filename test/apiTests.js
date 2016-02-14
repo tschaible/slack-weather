@@ -1,3 +1,5 @@
+'use strict';
+
 describe('slack-weather api', function() {
 
 	var app;
