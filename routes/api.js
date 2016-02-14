@@ -10,7 +10,7 @@ var weather = new Weather();
 /* GET home page. */
 router.post('/weather', function(req, res, next) {
 	var zip = req.body.text;
-	var fahrenheit = !req.body.command.includes('c');
+	var fahrenheit = req.body.command.indexOf('c') == -1;
 	if (!zip || !isValidUSZip(zip.trim())) {
 		res.json({
 			text: "I'm sorry I didn't understand.  Please use a US zip"
