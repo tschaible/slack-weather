@@ -10,6 +10,7 @@ var weather = new Weather();
 /* GET home page. */
 router.post('/weather', function(req, res, next) {
 	var zip = req.body.text;
+	var fahrenheit = !req.body.command.includes('c');
 	if (!zip || !isValidUSZip(zip.trim())) {
 		res.json({
 			text: "I'm sorry I didn't understand.  Please use a US zip"
@@ -23,9 +24,10 @@ router.post('/weather', function(req, res, next) {
 		} else {
 			res.json({
 				response_type: "in_channel",
-				text: util.format('Here\'s the weather in %s\n%s°F %s',
+				text: util.format('Here\'s the weather in %s\n%s°%s %s',
 					result.city,
-					result.tempF.toFixed(1),
+					fahrenheit ? result.tempF.toFixed(1) : result.tempC.toFixed(1),
+					fahrenheit ? 'F' : 'C',
 					result.description.join(', '))
 			});
 		}
