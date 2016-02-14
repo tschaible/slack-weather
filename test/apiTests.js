@@ -1,0 +1,223 @@
+describe('slack-weather api', function() {
+
+	var app;
+	var request = require('supertest');
+	var mockery = require('mockery');
+
+	var stubbedOWM = function Weather() {
+		this.getWeatherByZip = function(zip, callback) {
+			if (zip === '00000') {
+				callback(new Error(), null);
+			} else {
+				callback(null, {
+					city: "city",
+					tempC: 0,
+					tempF: 32,
+					description: ["cloudy"]
+				});
+			}
+		}
+		this.getForecastByZip = function(zip, callback) {
+			if (zip === '00001') {
+				callback(new Error(), null);
+			} else {
+				callback(null, {
+					city: "city",
+					forecast: [{
+						timestamp: 0,
+						lowTempC: 0,
+						lowTempF: 32,
+						highTempC: 100,
+						highTempF: 212,
+						description: ["boiling"]
+					}]
+				});
+			}
+		}
+	}
+
+	before(function() {
+		mockery.enable(); // Enable mockery at the start of your test suite
+		mockery.warnOnUnregistered(false);
+		mockery.registerMock('../modules/openweathermap', stubbedOWM);
+		app = require('../app.js');
+	});
+
+	describe('POST /weather', function() {
+		it('validates bad zip code', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "badzip"
+				})
+				.expect(200, {
+					text: "I'm sorry I didn't understand.  Please use a US zip"
+				}, done);
+		});
+
+		it('validates empty zip code', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: ""
+				})
+				.expect(200, {
+					text: "I'm sorry I didn't understand.  Please use a US zip"
+				}, done);
+		});
+
+		it('gets temp in F by default', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "12345"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the weather in city\n32.0°F cloudy"
+				}, done);
+		});
+
+		it('gets temp in F by specification of F', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "12345 F"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the weather in city\n32.0°F cloudy"
+				}, done);
+		});
+
+		it('gets temp in F by specification of f', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "12345   f"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the weather in city\n32.0°F cloudy"
+				}, done);
+		});
+
+		it('gets temp in C by specification of C', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "12345 C"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the weather in city\n0.0°C cloudy"
+				}, done);
+		});
+
+		it('gets temp in C by specification of c', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "12345 c"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the weather in city\n0.0°C cloudy"
+				}, done);
+		});
+
+		it('notifies when weather service is down', function(done) {
+			request(app).post('/v1/weather')
+				.send({
+					text: "00000"
+				})
+				.expect(200, {
+					text: "I'm sorry I couldn't process your request.  Please try again later"
+				}, done);
+		});
+	});
+
+	describe('POST /forecast', function() {
+		it('validates bad zip code', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "badzip"
+				})
+				.expect(200, {
+					text: "I'm sorry I didn't understand.  Please use a US zip"
+				}, done);
+		});
+
+		it('validates empty zip code', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: ""
+				})
+				.expect(200, {
+					text: "I'm sorry I didn't understand.  Please use a US zip"
+				}, done);
+		});
+
+		it('gets forecast in F by default', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "12345"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the upcoming weather in city\n12/31 High 212.0°F Low 32.0°F boiling"
+				}, done);
+		});
+
+		it('gets forecast in F by specification of F', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "12345 F"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the upcoming weather in city\n12/31 High 212.0°F Low 32.0°F boiling"
+				}, done);
+		});
+
+		it('gets forecast in F by specification of f', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "12345   f"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the upcoming weather in city\n12/31 High 212.0°F Low 32.0°F boiling"
+				}, done);
+		});
+
+		it('gets forecast in C by specification of C', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "12345 C"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the upcoming weather in city\n12/31 High 100.0°C Low 0.0°C boiling"
+				}, done);
+		});
+
+		it('gets forecast in C by specification of c', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "12345 c"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the upcoming weather in city\n12/31 High 100.0°C Low 0.0°C boiling"
+				}, done);
+		});
+
+		it('notifies when weather service is down', function(done) {
+			request(app).post('/v1/forecast')
+				.send({
+					text: "00001"
+				})
+				.expect(200, {
+					text: "I'm sorry I couldn't process your request.  Please try again later"
+				}, done);
+		});
+	});
+
+	after(function() {
+		mockery.disable(); // Disable Mockery after tests are completed
+	});
+});
