@@ -20,11 +20,16 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "version": "0.0.1",
   "devDependencies": {
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.0.0",
     "mockery": "^1.4.0",
     "supertest": "^1.2.0"
   }
