@@ -1,6 +1,7 @@
 # slack-weather
 
 [![Build Status](https://travis-ci.org/tschaible/slack-weather.svg?branch=master)](http://travis-ci.org/tschaible/slack-weather?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/tschaible/slack-weather/badge.svg?branch=master)](https://coveralls.io/github/tschaible/slack-weather?branch=master)
 
 slack-weather is a node.js REST server which can be used to back slack custom slash weather and forecast commands that utilize the openweathermap.org API.
 
