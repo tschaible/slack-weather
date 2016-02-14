@@ -24,7 +24,7 @@ describe('slack-weather api', function() {
 				callback(null, {
 					city: "city",
 					forecast: [{
-						timestamp: 0,
+						timestamp: 43200,
 						lowTempC: 0,
 						lowTempF: 32,
 						highTempC: 100,
@@ -158,7 +158,7 @@ describe('slack-weather api', function() {
 				})
 				.expect(200, {
 					response_type: "in_channel",
-					text: "Here\'s the upcoming weather in city\n12/31 High 212.0°F Low 32.0°F boiling"
+					text: "Here\'s the upcoming weather in city\n1/1 High 212.0°F Low 32.0°F boiling"
 				}, done);
 		});
 
@@ -169,7 +169,7 @@ describe('slack-weather api', function() {
 				})
 				.expect(200, {
 					response_type: "in_channel",
-					text: "Here\'s the upcoming weather in city\n12/31 High 212.0°F Low 32.0°F boiling"
+					text: "Here\'s the upcoming weather in city\n1/1 High 212.0°F Low 32.0°F boiling"
 				}, done);
 		});
 
@@ -180,7 +180,7 @@ describe('slack-weather api', function() {
 				})
 				.expect(200, {
 					response_type: "in_channel",
-					text: "Here\'s the upcoming weather in city\n12/31 High 212.0°F Low 32.0°F boiling"
+					text: "Here\'s the upcoming weather in city\n1/1 High 212.0°F Low 32.0°F boiling"
 				}, done);
 		});
 
@@ -191,7 +191,7 @@ describe('slack-weather api', function() {
 				})
 				.expect(200, {
 					response_type: "in_channel",
-					text: "Here\'s the upcoming weather in city\n12/31 High 100.0°C Low 0.0°C boiling"
+					text: "Here\'s the upcoming weather in city\n1/1 High 100.0°C Low 0.0°C boiling"
 				}, done);
 		});
 
@@ -202,7 +202,7 @@ describe('slack-weather api', function() {
 				})
 				.expect(200, {
 					response_type: "in_channel",
-					text: "Here\'s the upcoming weather in city\n12/31 High 100.0°C Low 0.0°C boiling"
+					text: "Here\'s the upcoming weather in city\n1/1 High 100.0°C Low 0.0°C boiling"
 				}, done);
 		});
 
