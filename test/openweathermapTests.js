@@ -1,9 +1,9 @@
 'use strict';
 
 describe('openweathermaps', function() {
-	const weather = new require('../modules/openweathermap')('KEY');
-	const nock = require('nock');
-	const assert = require('assert');
+	var weather = new require('../modules/openweathermap')('KEY');
+	var nock = require('nock');
+	var assert = require('assert');
 	describe('getWeatherByZip', function() {
 		it('gets the current weather for a zip', function(done) {
 			//mock a successful weather lookup
