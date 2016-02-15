@@ -44,10 +44,10 @@ describe('openweathermaps', function() {
 					appid: "KEY"
 				})
 				.reply('400');
-			weather.getWeatherByZip('12345', function(err, res) {
+			weather.getWeatherByZip('12345', function(err) {
 				//check a correct error was returned
 				assert.strictEqual(err.message, 'Error from weather service');
-				assert.strictEqual(err.status, 500)
+				assert.strictEqual(err.status, 500);
 				done();
 			});
 		});
@@ -68,10 +68,10 @@ describe('openweathermaps', function() {
 						description: 'drizzle'
 					}]
 				});
-			weather.getWeatherByZip('12345', function(err, res) {
+			weather.getWeatherByZip('12345', function(err) {
 				//check a correct error was returned
 				assert.strictEqual(err.message, 'Unknown response from weather service');
-				assert.strictEqual(err.status, 500)
+				assert.strictEqual(err.status, 500);
 				done();
 			});
 		});
@@ -186,10 +186,10 @@ describe('openweathermaps', function() {
 				})
 				.reply('400');
 
-			weather.getForecastByZip('12345', function(err, res) {
+			weather.getForecastByZip('12345', function(err) {
 				//check a correct error was returned
 				assert.strictEqual(err.message, 'Error from weather service');
-				assert.strictEqual(err.status, 500)
+				assert.strictEqual(err.status, 500);
 				done();
 			});
 		});
@@ -223,10 +223,10 @@ describe('openweathermaps', function() {
 				})
 				.reply('200', {});
 
-			weather.getForecastByZip('12345', function(err, res) {
+			weather.getForecastByZip('12345', function(err) {
 				//check a correct error was returned
 				assert.strictEqual(err.message, 'Unknown response from weather service');
-				assert.strictEqual(err.status, 500)
+				assert.strictEqual(err.status, 500);
 				done();
 			});
 		});

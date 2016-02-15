@@ -18,7 +18,7 @@ describe('slack-weather api', function() {
           description: ["cloudy"]
         });
       }
-    }
+    };
     this.getForecastByZip = function(zip, callback) {
       if (zip === '00001') {
         callback(new Error(), null);
@@ -35,8 +35,8 @@ describe('slack-weather api', function() {
           }]
         });
       }
-    }
-  }
+    };
+  };
 
   var stubbedRadar = function Radar() {
     this.getRadarByZip = function(zip, callback) {
@@ -53,8 +53,8 @@ describe('slack-weather api', function() {
           radarMap: "http://example.org"
         });
       }
-    }
-  }
+    };
+  };
 
   before(function() {
     mockery.enable(); // Enable mockery at the start of your test suite

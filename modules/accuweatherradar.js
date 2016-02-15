@@ -79,7 +79,7 @@ function Radar() {
         radarMap: mapLookup[lookup.state] ? mapLookup[lookup.state] : null
       });
     }
-  }
+  };
 }
 
 module.exports = Radar;

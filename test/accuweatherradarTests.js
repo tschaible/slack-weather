@@ -26,7 +26,7 @@ describe('accuweatherradar', function() {
 
 
     it('returns error on bad zip', function(done) {
-      radar.getRadarByZip('0000', function(err, res) {
+      radar.getRadarByZip('0000', function(err) {
         assert(err);
         //verify data was looked up correctly
         assert.strictEqual(err.status, 404);

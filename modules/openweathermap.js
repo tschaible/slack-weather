@@ -4,7 +4,7 @@ var request = require('request');
 var qs = require('querystring');
 var debug = require('debug')('slack-weather:openweathermap');
 
-var apiBase = 'http://api.openweathermap.org/data/2.5/'
+var apiBase = 'http://api.openweathermap.org/data/2.5/';
 
 
 function Weather(apiKey) {
@@ -25,10 +25,11 @@ function Weather(apiKey) {
 				appid: this.apiKey
 			}),
 			function handleRequest(err, res, body) {
+				var error;
 				if (!err && res.statusCode == 200) {
 					var owmResponse = JSON.parse(body);
 					if (!owmResponse.main || !owmResponse.main.temp) {
-						var error = new Error('Unknown response from weather service');
+						error = new Error('Unknown response from weather service');
 						error.status = 500;
 						debug('Unknown Weather Service response: \n%s', body);
 						return callback(error, null);
@@ -38,11 +39,11 @@ function Weather(apiKey) {
 					response.tempC = owmResponse.main.temp - 273.15;
 					response.tempF = (response.tempC * 1.8) + 32;
 					response.description = owmResponse.weather.map(function(obj) {
-						return obj.description
+						return obj.description;
 					});
 					return callback(null, response);
 				} else if (!err) {
-					var error = new Error('Error from weather service');
+					error = new Error('Error from weather service');
 					error.status = 500;
 					debug('Weather Service error: \n%s', body);
 					return callback(error, null);
@@ -65,10 +66,11 @@ function Weather(apiKey) {
 						appid: key
 					}),
 					function handleRequest(err, res, body) {
+						var error;
 						if (!err && res.statusCode == 200) {
 							var owmResponse = JSON.parse(body);
 							if (!owmResponse.list ) {
-								var error = new Error('Unknown response from weather service');
+								error = new Error('Unknown response from weather service');
 								error.status = 500;
 								debug('Unknown Forecast Service response: \n%s', body);
 								return callback(error, null);
@@ -90,7 +92,7 @@ function Weather(apiKey) {
 							});
 							return callback(null, response);
 						} else if (!err) {
-							var error = new Error('Error from weather service');
+							error = new Error('Error from weather service');
 							error.status = 500;
 							debug('Weather Service error: \n%s', body);
 							return callback(error, null);
@@ -100,7 +102,7 @@ function Weather(apiKey) {
 					});
 			}
 		});
-	}
+	};
 }
 
 module.exports = Weather;
