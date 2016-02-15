@@ -266,7 +266,6 @@ describe('slack-weather api', function() {
 				})
 				.expect(200, {
 					response_type: "in_channel",
-					text: "Here\'s the radar for city",
 					attachments: [{
 						color: "#F35A00",
 						image_url: "http://example.org",

@@ -101,7 +101,6 @@ router.post('/radar', function(req, res, next) {
 			} else {
 				res.json({
 					response_type: "in_channel",
-					text: util.format('Here\'s the radar for %s', result.city),
 					attachments: [{
 						title: util.format('Here\'s the radar for %s', result.city),
 						pretext: util.format('Radar Map for %s <%s>', result.city, result.radarMap),
