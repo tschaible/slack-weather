@@ -1,6 +1,7 @@
 'use strict';
 
 var Weather = require('../modules/openweathermap');
+var Radar = require('../modules/accuweatherradar');
 var express = require('express');
 var util = require('util');
 var moment = require('moment');
@@ -9,6 +10,8 @@ var router = express.Router();
 
 //new Weather API using the key defaulted from the environment
 var weather = new Weather();
+
+var radar = new Radar();
 
 /* current weather */
 router.post('/weather', function(req, res, next) {
@@ -70,6 +73,41 @@ router.post('/forecast', function(req, res, next) {
 					text: util.format('Here\'s the upcoming weather in %s\n%s',
 						result.city,
 						forecast)
+				});
+			}
+		});
+	}
+
+});
+
+/* current radar */
+router.post('/radar', function(req, res, next) {
+	var tokens = req.body.text.split(/\s+/);
+	var zip = tokens[0];
+	if (!zip || !isValidUSZip(zip.trim())) {
+		res.json({
+			text: "I'm sorry I didn't understand.  Please use a US zip"
+		});
+	} else {
+		radar.getRadarByZip(zip.trim(), function handleResponse(err, result) {
+			if (err) {
+				res.json({
+					text: "I'm sorry I couldn't process your request.  Please try again later"
+				});
+			} else if (!result.radarMap) {
+				res.json({
+					text: util.format('I\'m sorry, I couldn\'t find a radar map for %s', result.city)
+				});
+			} else {
+				res.json({
+					response_type: "in_channel",
+					text: util.format('Here\'s the radar for %s', result.city),
+					attachments: [{
+						title: util.format('Here\'s the radar for %s', result.city),
+						pretext: util.format('Radar Map for %s <%s>', result.city, result.radarMap),
+						image_url: result.radarMap,
+						color: "#F35A00"
+					}]
 				});
 			}
 		});

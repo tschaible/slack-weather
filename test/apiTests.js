@@ -38,10 +38,29 @@ describe('slack-weather api', function() {
 		}
 	}
 
+	var stubbedRadar = function Radar() {
+		this.getRadarByZip = function(zip, callback) {
+			if (zip === '00000') {
+				callback(new Error(), null);
+			} else if (zip === '00001') {
+				callback(null, {
+					city: "city",
+					radarMap: null
+				});
+			} else {
+				callback(null, {
+					city: "city",
+					radarMap: "http://example.org"
+				});
+			}
+		}
+	}
+
 	before(function() {
 		mockery.enable(); // Enable mockery at the start of your test suite
 		mockery.warnOnUnregistered(false);
 		mockery.registerMock('../modules/openweathermap', stubbedOWM);
+		mockery.registerMock('../modules/accuweatherradar', stubbedRadar);
 		app = require('../app.js');
 	});
 
@@ -217,6 +236,66 @@ describe('slack-weather api', function() {
 					text: "I'm sorry I couldn't process your request.  Please try again later"
 				}, done);
 		});
+	});
+
+	describe('POST /radar', function() {
+		it('validates bad zip code', function(done) {
+			request(app).post('/v1/radar')
+				.send({
+					text: "badzip"
+				})
+				.expect(200, {
+					text: "I'm sorry I didn't understand.  Please use a US zip"
+				}, done);
+		});
+
+		it('validates empty zip code', function(done) {
+			request(app).post('/v1/radar')
+				.send({
+					text: ""
+				})
+				.expect(200, {
+					text: "I'm sorry I didn't understand.  Please use a US zip"
+				}, done);
+		});
+
+		it('gets radar map', function(done) {
+			request(app).post('/v1/radar')
+				.send({
+					text: "12345"
+				})
+				.expect(200, {
+					response_type: "in_channel",
+					text: "Here\'s the radar for city",
+					attachments: [{
+						color: "#F35A00",
+						image_url: "http://example.org",
+						pretext: "Radar Map for city <http://example.org>",
+						title: "Here\'s the radar for city"
+					}]
+				}, done);
+		});
+
+		it('notifies when a radar map could not be found', function(done) {
+			request(app).post('/v1/radar')
+				.send({
+					text: "00001"
+				})
+				.expect(200, {
+					text: "I'm sorry, I couldn't find a radar map for city"
+				}, done);
+		});
+
+		it('notifies when weather service is down', function(done) {
+			request(app).post('/v1/radar')
+				.send({
+					text: "00000"
+				})
+				.expect(200, {
+					text: "I'm sorry I couldn't process your request.  Please try again later"
+				}, done);
+		});
+
 	});
 
 	after(function() {
