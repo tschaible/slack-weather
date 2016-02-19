@@ -9,7 +9,7 @@ describe('accuweatherradar', function() {
         assert(!err);
         //verify data was looked up correctly
         assert.strictEqual(res.city, 'Schenectady');
-        assert.ok(/http\:\/\/sirocco\.accuweather\.com\/nx_mosaic_640x480_public\/sir\/inmasirny_\.gif\?[0-1]+/.test(res.radarMap));
+        assert.ok(/http\:\/\/sirocco\.accuweather\.com\/nx_mosaic_640x480_public\/sir\/inmasirny_\.gif\?cb\=[0-1]+/.test(res.radarMap));
         done();
       });
     });

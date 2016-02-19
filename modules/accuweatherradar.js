@@ -75,7 +75,7 @@ function Radar() {
       error.status = 404;
       callback(error, null);
     } else {
-      var cachebuster = "?" + Date.now();
+      var cachebuster = "?cb=" + Date.now();
       callback(null, {
         city: lookup.city,
         radarMap: mapLookup[lookup.state] ? mapLookup[lookup.state] + cachebuster : null
