@@ -69,14 +69,16 @@ function Radar() {
 
   this.getRadarByZip = function(zip, callback) {
     var lookup = zipcodes.lookup(zip);
+
     if (!lookup) {
       var error = new Error('Could not find zipcode');
       error.status = 404;
       callback(error, null);
     } else {
+      var cachebuster = "?" + Date.now();
       callback(null, {
         city: lookup.city,
-        radarMap: mapLookup[lookup.state] ? mapLookup[lookup.state] : null
+        radarMap: mapLookup[lookup.state] ? mapLookup[lookup.state] + cachebuster : null
       });
     }
   };
