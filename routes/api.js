@@ -96,7 +96,7 @@ router.post('/radar', function(req, res, next) {
           attachments: [{
             title: 'Here\'s the national radar map',
             pretext: util.format('National Radar Map <%s>', result.radarMap),
-            image_url: result.radarMap,
+            image_url: result.radarMap + (result.cacheBuster ? "?cb=" + result.cacheBuster : ""),
             color: "#F35A00"
           }]
         });
@@ -122,7 +122,7 @@ router.post('/radar', function(req, res, next) {
           attachments: [{
             title: util.format('Here\'s the radar for %s', result.city),
             pretext: util.format('Radar Map for %s <%s>', result.city, result.radarMap),
-            image_url: result.radarMap,
+            image_url: result.radarMap + (result.cacheBuster ? "?cb=" + result.cacheBuster : ""),
             color: "#F35A00"
           }]
         });

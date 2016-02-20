@@ -56,7 +56,8 @@ describe('slack-weather api', function() {
     };
     this.getNationalRadar = function (callback) {
         callback(null, {
-            radarMap: "http://example.org"
+            radarMap: "http://example.org",
+            cacheBuster: "1234"
         });
     };
   };
@@ -264,7 +265,7 @@ describe('slack-weather api', function() {
           response_type: "in_channel",
           attachments: [{
             color: "#F35A00",
-            image_url: "http://example.org",
+            image_url: "http://example.org?cb=1234",
             pretext: "National Radar Map <http://example.org>",
             title: "Here\'s the national radar map"
           }]
