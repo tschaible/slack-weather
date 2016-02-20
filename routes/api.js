@@ -1,7 +1,7 @@
 'use strict';
 
 var Weather = require('../modules/openweathermap');
-var Radar = require('../modules/accuweatherradar');
+var Radar = require('../modules/noaaradar');
 var express = require('express');
 var util = require('util');
 var moment = require('moment');

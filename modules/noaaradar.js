@@ -85,7 +85,9 @@ function Radar() {
   };
 
   this.getNationalRadar = function (callback) {
-    callback(null, mapLookup.NATL + "?cb=" + Date.now());
+    callback(null, {
+        radarMap: mapLookup.NATL + "?cb=" + Date.now()
+    });
   }
 }
 
