@@ -9,7 +9,8 @@ describe('noaaradar', function() {
         assert(!err);
         //verify data was looked up correctly
         assert.strictEqual(res.city, 'Schenectady');
-        assert.ok(/^http:\/\/radar.weather.gov\/ridge\/Conus\/Loop\/northeast_loop.gif\?cb=[0-9]+$/.test(res.radarMap));
+        assert.strictEqual(res.radarMap, "http://radar.weather.gov/ridge/Conus/Loop/northeast_loop.gif");
+        assert.ok(/^[0-9]+$/.test(res.cacheBuster));
         done();
       });
     });
@@ -41,7 +42,8 @@ describe('noaaradar', function() {
       radar.getNationalRadar(function (err, res) {
         assert(!err);
         //verify data was looked up correctly
-        assert.ok(/^http:\/\/radar.weather.gov\/ridge\/Conus\/Loop\/NatLoop_Small.gif\?cb=[0-9]+$/.test(res.radarMap));
+        assert.strictEqual(res.radarMap, "http://radar.weather.gov/ridge/Conus/Loop/NatLoop_Small.gif");
+        assert.ok(/^[0-9]+$/.test(res.cacheBuster));
         done();
       });
     });

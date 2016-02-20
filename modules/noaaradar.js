@@ -76,17 +76,18 @@ function Radar() {
       error.status = 404;
       callback(error, null);
     } else {
-      var cachebuster = "?cb=" + Date.now();
       callback(null, {
         city: lookup.city,
-        radarMap: mapLookup[lookup.state] ? mapLookup[lookup.state] + cachebuster : null
+        radarMap: mapLookup[lookup.state] ? mapLookup[lookup.state] : null,
+        cacheBuster: Date.now()
       });
     }
   };
 
   this.getNationalRadar = function (callback) {
     callback(null, {
-        radarMap: mapLookup.NATL + "?cb=" + Date.now()
+        radarMap: mapLookup.NATL,
+        cacheBuster: Date.now()
     });
   };
 }
