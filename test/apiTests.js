@@ -61,6 +61,7 @@ describe('slack-weather api', function() {
     mockery.warnOnUnregistered(false);
     mockery.registerMock('../modules/openweathermap', stubbedOWM);
     mockery.registerMock('../modules/accuweatherradar', stubbedRadar);
+    mockery.registerMock('../modules/noaaradar', stubbedRadar);
     app = require('../app.js');
   });
 
