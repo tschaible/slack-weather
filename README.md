@@ -23,7 +23,9 @@ Source: openweathermap.org
 ###/radar zipcode
 Get a radar gif attachment for `zipcode`
 
-Source: accuweather.com
+If you omit zipcode, it will show the US weather map
+
+Source: weather.gov
 
 ## Running the Server
 ```
