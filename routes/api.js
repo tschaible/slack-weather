@@ -84,7 +84,25 @@ router.post('/forecast', function(req, res, next) {
 router.post('/radar', function(req, res, next) {
   var tokens = req.body.text.split(/\s+/);
   var zip = tokens[0];
-  if (!zip || !isValidUSZip(zip.trim())) {
+  if (!zip && radar.getNationalRadar) {
+    radar.getNationalRadar(function handleResponse(err, result) {
+      if (err || !result.radarMap) {
+        res.json({
+          text: "I'm sorry I couldn't process your request.  Please try again later"
+        });
+      } else {
+        res.json({
+          response_type: "in_channel",
+          attachments: [{
+            title: 'Here\'s the national radar map',
+            pretext: util.format('National Radar Map <%s>', result.radarMap),
+            image_url: result.radarMap,
+            color: "#F35A00"
+          }]
+        });
+      }
+    });
+  } else if (!zip || !isValidUSZip(zip.trim())) {
     res.json({
       text: "I'm sorry I didn't understand.  Please use a US zip"
     });

@@ -54,6 +54,11 @@ describe('slack-weather api', function() {
         });
       }
     };
+    this.getNationalRadar = function (callback) {
+        callback(null, {
+            radarMap: "http://example.org"
+        });
+    };
   };
 
   before(function() {
@@ -250,13 +255,19 @@ describe('slack-weather api', function() {
         }, done);
     });
 
-    it('validates empty zip code', function(done) {
+    it('gets national radar map if zip code is empty', function(done) {
       request(app).post('/v1/radar')
         .send({
           text: ""
         })
         .expect(200, {
-          text: "I'm sorry I didn't understand.  Please use a US zip"
+          response_type: "in_channel",
+          attachments: [{
+            color: "#F35A00",
+            image_url: "http://example.org",
+            pretext: "National Radar Map <http://example.org>",
+            title: "Here\'s the national radar map"
+          }]
         }, done);
     });
 
