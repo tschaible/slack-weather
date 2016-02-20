@@ -88,7 +88,7 @@ function Radar() {
     callback(null, {
         radarMap: mapLookup.NATL + "?cb=" + Date.now()
     });
-  }
+  };
 }
 
 module.exports = Radar;
