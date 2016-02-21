@@ -10,7 +10,6 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json app.js /usr/src/app/
-COPY public /usr/src/app/public
 COPY routes /usr/src/app/routes
 COPY modules /usr/src/app/modules
 COPY bin /usr/src/app/bin
