@@ -23,7 +23,9 @@ Source: openweathermap.org
 ###/radar zipcode
 Get a radar gif attachment for `zipcode`
 
-Source: accuweather.com
+If you omit zipcode, it will show the US weather map
+
+Source: weather.gov
 
 ## Running the Server
 ```
@@ -40,6 +42,7 @@ To specify an alternate, such as 'localhost' and port 8080, run as follows
 OPENWEATHERMAP_API_KEY=[apiKey] PORT=8080 SERVER_HOST=localhost npm start
 ```
 where `[apiKey]` is a valid openweathmap.org API key.  
+
 
 ##Running with Docker
 The application can be run using docker.  Simply run the following:
