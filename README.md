@@ -47,7 +47,6 @@ where `[apiKey]` is a valid openweathmap.org API key.
 ##Running with Docker
 The application can be run using docker.  Simply run the following:
 ```
-docker build -t tschaible/slack-weather .
-docker run -d -e OPENWEATHERMAP_API_KEY=<apiKey> -p 3000:3000 tschaible/slack-weather
+docker run -d -e OPENWEATHERMAP_API_KEY=<apiKey> -p 3000:3000 tschaible/slack-weather:latest
 ```
 This will build the Docker image as tschaible/slack-weather and run it, listening on the host machine's port 3000
