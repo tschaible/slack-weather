@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 #stop old containers if they ar running
-if [[ $(docker ps -a -q --filter 'label=environment=slack_weather_integration_test') ]]; then
+if [ $(docker ps -a -q --filter 'label=environment=slack_weather_integration_test') ]; then
 	docker stop $(docker ps -a -q --filter 'label=environment=slack_weather_integration_test')
 fi
 
@@ -12,7 +12,7 @@ docker run -e OPENWEATHERMAP_API_KEY=$OPENWEATHERMAP_API_KEY -d \
 
 #wait for server to come up, up to 20s
 RETRY=0
-until [[ $RETRY -gt 3 ]] || $(curl --output /dev/null --silent --head http://$DOCKER_HOST_ADDRESS:6789); do 
+until [ "$RETRY" -gt 3 ] || $(curl --output /dev/null --silent --head http://$DOCKER_HOST_ADDRESS:6789); do 
 	RETRY=$(($RETRY + 1))
 	sleep 5
 	printf '.'
