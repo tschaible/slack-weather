@@ -20,9 +20,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "./node_modules/.bin/mocha --reporter spec && npm run lint",
-    "preintegration-test": "docker build --force-rm -t tschaible/slack-weather:integration-test . && docker run -e OPENWEATHERMAP_API_KEY=$OPENWEATHERMAP_API_KEY -d -p 6789:3000 --label environment=integration_test tschaible/slack-weather:integration-test && sleep 5",
+    "preintegration-test": "sh ./scripts/pre-integration-test.sh",
     "integration-test": "./node_modules/.bin/mocha --reporter spec integration-test",
-    "postintegration-test": "docker stop $(docker ps -a -q --filter 'label=environment=integration_test'); docker rm $(docker ps -a -q --filter 'label=environment=integration_test')",
+    "postintegration-test": "sh ./scripts/post-integration-test.sh",
     "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "lint": "./node_modules/.bin/jshint ."
